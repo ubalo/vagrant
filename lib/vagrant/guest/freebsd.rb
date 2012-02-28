@@ -66,7 +66,7 @@ module Vagrant
           entry = TemplateRenderer.render("guests/freebsd/network_#{network[:type]}",
                                           :options => network)
           vm.channel.upload(StringIO.new(entry), "/tmp/vagrant-network-entry")
-          vm.channel.sudo("su -m root -c 'cat /tmp/vagrant-network-entry >> /etc/rc.conf'")
+          vm.channel.sudo("su -m root -c 'cat /tmp/vagrant-network-entry >> /etc/rc.conf' && rm /tmp/vagrant-network-entry")
           if network[:type].to_sym == :static
             vm.channel.sudo("ifconfig em#{network[:interface]} inet #{network[:ip]} netmask #{network[:netmask]}")
           elsif network[:type].to_sym == :dhcp
